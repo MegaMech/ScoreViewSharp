@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+             xmlns:vm="clr-namespace:ScoreViewer.ViewModels"
+             x:Class="ScoreViewer.Views.MenuView"
+	         x:DataType="vm:MenuViewModel">
+    <Grid Background="LightBlue">
+		<StackPanel HorizontalAlignment="Center" Background="LightCoral">
+			<Grid Width="600">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="60"/>
+					<RowDefinition Height="300"/>
+					<RowDefinition Height="60"/>
+					<RowDefinition Height="60"/>
+				</Grid.RowDefinitions>
+				<Border BorderBrush="{x:Null}" Height="50">
+					<TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="40" FontWeight="Bold" FontFamily="Arial Black">ScoreView</TextBlock>
+				</Border>
+				
+				<TreeView FontSize="18" x:Name="OneDriveTreeView" Grid.Row="1" ItemsSource="{Binding Nodes}">
+					<TreeView.ItemTemplate>
+						<TreeDataTemplate ItemsSource="{Binding SubNodes}"> 
+							<Button Click="TreeItemClickedHandler" IsEnabled="True" x:Name="TreeItemEl" Content="{Binding Title}" Background="Transparent" BorderBrush="Transparent" Padding="0" Margin="0">
+								<Button.Styles>
+									<Style Selector="Button">
+										<Setter Property="Background" Value="Transparent" />
+										<Setter Property="BorderBrush" Value="Transparent" />
+									</Style>
+									<Style Selector="Button:pointerover">
+										<Setter Property="Background" Value="Transparent" />
+										<Setter Property="BorderBrush" Value="Transparent" />
+									</Style>
+									<Style Selector="Button:pressed">
+										<Setter Property="Background" Value="Transparent" />
+										<Setter Property="BorderBrush" Value="Transparent" />
+									</Style>
+								</Button.Styles>
+							</Button>
+						</TreeDataTemplate>
+					</TreeView.ItemTemplate>
+				</TreeView>
+				
+				<Button FontSize="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="ExitButton" Grid.Row="3" Grid.Column="0">Exit</Button>
+			</Grid>
+		</StackPanel>
+	</Grid>
+</UserControl>
