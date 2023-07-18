@@ -21,7 +21,8 @@ namespace ScoreViewer.Views;
 
 public partial class MainWindow : Window
 {
-    private MainViewModel _viewModel;
+    public MainViewModel _viewModel;
+    //private MenuView _menuView;
 
     public MainWindow()
     {
@@ -29,10 +30,45 @@ public partial class MainWindow : Window
 #if DEBUG
         this.AttachDevTools();
 #endif
+        //_menuView = new MenuView();
+        //Content = _menuView;
+
         _viewModel = new MainViewModel();
-        DataContext = _viewModel;
+        //DataContext = _viewModel;
+        //ViewContent = new MenuView();
+
+        //MenuView menuView = new MenuView();
+        //menuView.DataContext = new MenuViewModel();
+
+        //ContentControl contentControl = this.FindControl<ContentControl>("ContentView");
+
+        //contentControl.Content = menuView;
+
+        //Content = new MenuView();
+
 
         _viewModel.MenuViewModel.PdfFileSelected += OnPdfFilSelected;
+    }
+
+    public void OnGotoMenu(object sender, EventArgs e)
+    {
+
+        //MenuViewModel menuViewModel = menuView.DataContext as MenuViewModel;
+        //if (menuViewModel != null)
+        //{
+        //    // Use the menuViewModel instance here
+        //}
+        try
+        {
+            // MainViewModel
+            //MenuView menuView = new MenuView();
+            //DataContext = _viewModel.MenuViewModel;
+            //this.Content = menuView;
+        }
+        catch
+        {
+            throw new Exception("Error: The menu was null when attempting to switch back to it.");
+        }
     }
 
     private PdfManager _pdfManager;
@@ -47,25 +83,34 @@ public partial class MainWindow : Window
 
         _pdfManager = new PdfManager(path);
 
-
-        // Create secondary window
-        var screens = Screens.All;
-        _secondWindow = new SecondaryWindow(_pdfManager);
-
-        if (screens.Count >= 2)
+        // Skip re-creating the second window if it already exists.
+        if (_secondWindow != null)
         {
-            // Get the second screen
-            var secondScreen = screens[1];
-            _secondWindow.Position = secondScreen.WorkingArea.Position;
-            _secondWindow.Width = secondScreen.WorkingArea.Width;
-            _secondWindow.Height = secondScreen.WorkingArea.Height;
+            _secondWindow.Show();
         }
-        _secondWindow.WindowState = WindowState.Maximized;
-        _secondWindow.Show();
+        else
+        {
+            // Create secondary window
+            var screens = Screens.All;
+            _secondWindow = new SecondaryWindow(_pdfManager);
 
+            if (screens.Count >= 2)
+            {
+                // Get the second screen
+                var secondScreen = screens[1];
+                _secondWindow.Position = secondScreen.WorkingArea.Position;
+                _secondWindow.Width = secondScreen.WorkingArea.Width;
+                _secondWindow.Height = secondScreen.WorkingArea.Height;
+            }
+            _secondWindow.WindowState = WindowState.Maximized;
+            _secondWindow.Show();
+        }
 
         // Finally launch the PDF view
-        var pdfView = new PdfView(_pdfManager, this, _secondWindow);
+        var pdfView = new PdfView();
+        pdfView.Init(_pdfManager, this, _secondWindow);
         this.Content = pdfView;
+
+        pdfView.GotoMenu += OnGotoMenu;
     }
 }

@@ -18,6 +18,8 @@ namespace ScoreViewer.Views
 {
     public partial class PdfView : UserControl
     {
+        public event EventHandler GotoMenu;
+
         private Avalonia.Controls.Image _pdfImage;
         private Button _backButton;
         private Button _nextPageButton;
@@ -31,13 +33,11 @@ namespace ScoreViewer.Views
 
         private Avalonia.Point initialTouchPosition;
         private double gestureSensitivity = 50; // Adjust the sensitivity as needed
-        public PdfView(PdfManager pdfManager, MainWindow window,SecondaryWindow secondWindow)
+        public PdfView()
         {
-            _pdfManager = pdfManager;
-            _secondWindow = secondWindow;
             InitializeComponent();
             _pdfImage = this.FindControl<Avalonia.Controls.Image>("PdfImage");
-            _backButton = this.FindControl<Button>("OpenButton");
+            _backButton = this.FindControl<Button>("BackButton");
             _nextPageButton = this.FindControl<Button>("NextPageButton");
             _prevPageButton = this.FindControl<Button>("PrevPageButton");
             _openButton = this.FindControl<Button>("OpenButton");
@@ -45,16 +45,22 @@ namespace ScoreViewer.Views
 
             //_pdfManager = new PdfManager("C:\\images.pdf");
 
-            ShowPage();
 
+            _openButton.Click += (sender, e) =>
+            {
+                OpenPdf();
+            };
+        }
+        public void Init(PdfManager pdfManager, MainWindow window, SecondaryWindow secondWindow)
+        {
+            _pdfManager = pdfManager;
+            _secondWindow = secondWindow;
             _backButton.Click += (sender, e) =>
             {
                 _pdfManager.Dispose();
-                secondWindow.Close();
-                var menuView = new MenuView();
-                window.Content = menuView;
+                secondWindow.Hide();
+                GotoMenu?.Invoke(this, EventArgs.Empty);
             };
-
             _nextPageButton.Click += (sender, e) =>
             {
                 _pdfManager.NextPage();
@@ -66,11 +72,7 @@ namespace ScoreViewer.Views
                 _pdfManager.PrevPage();
                 ShowPage();
             };
-
-            _openButton.Click += (sender, e) =>
-            {
-                OpenPdf();
-            };
+            ShowPage();
         }
         private void OpenPdf()
         {

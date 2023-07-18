@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +12,7 @@ namespace ScoreViewer.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     public MenuViewModel MenuViewModel { get; }
+    //public ViewModelBase ViewContent { get; } = "MenuViewModel";
 
     public delegate void MainWindowFunctionDelegate();
     public MainWindowFunctionDelegate MainWindowFunction { get; set; }
@@ -18,6 +20,8 @@ public partial class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         MenuViewModel = new MenuViewModel();
+        
+        //ViewContent = MenuViewModel;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
