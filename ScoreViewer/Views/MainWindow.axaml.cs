@@ -79,7 +79,13 @@ public partial class MainWindow : Window
         // 2) Create the second window
         // 3) Create the PdfView
 
-        _pdfManager = new PdfManager(path);
+        try {
+            _menuView.clearErrorMessage();
+            _pdfManager = new PdfManager(path);
+        } catch (PdfManagerException e) {
+            _menuView.setErrorMessage(e.Message);
+            return;
+        }
 
         // Skip re-creating the second window if it already exists.
         if (_secondWindow != null)

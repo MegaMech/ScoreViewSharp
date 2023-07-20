@@ -19,6 +19,7 @@ namespace ScoreViewer.Views
     {
         private Button _exitButton;
         private TextBlock _textBlock;
+        private TextBlock _error;
 
         public ICommand ItemClickedCommand { get; }
 
@@ -28,12 +29,24 @@ namespace ScoreViewer.Views
             DataContextChanged += OnDataContextChanged;
 
             _exitButton = this.FindControl<Button>("ExitButton");
+            _error = this.FindControl<TextBlock>("ErrorMessage");
+            _error!.IsVisible = false;
 
             _exitButton.Click += (sender, e) =>
             {
                 // Close the application
                 System.Environment.Exit(1);
             };
+        }
+
+        public void setErrorMessage(string message) {
+            _error.Text = message;
+            _error.IsVisible = true;
+        }
+
+        public void clearErrorMessage() {
+            _error.Text = string.Empty;
+            _error.IsVisible = false;
         }
 
         private void TreeItemClickedHandler(object sender, RoutedEventArgs e)
