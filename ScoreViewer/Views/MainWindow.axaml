@@ -12,15 +12,5 @@
 		ExtendClientAreaChromeHints="NoChrome"
 		ExtendClientAreaTitleBarHeightHint="-1"
 		x:DataType="vm:MainViewModel">
-	<Window.DataTemplates>
-		
-			<DataTemplate DataType="vm:MenuViewModel">
-text
-			</DataTemplate>
-		
-			<DataTemplate DataType="vm:PdfViewModel">
-notsdoif
-			</DataTemplate>
-
-	</Window.DataTemplates>
+    <views:MenuView/>
 </Window>

@@ -5,10 +5,11 @@ using System.Drawing;
 using System.Diagnostics;
 using Avalonia;
 
-public class PdfManager
+public class PdfManager : IDisposable
 {
     private PdfDocument _pdfDocument;
     private int _currentPageIndex = 0;
+    private bool _isDisposed = false;
 
     public PdfManager(string filePath)
     {
@@ -19,6 +20,7 @@ public class PdfManager
 
     public Stream RenderPage(int pageIndex)
     {
+        CheckDisposed();
         if (_pdfDocument.PageCount > pageIndex && pageIndex >= 0)
         {
             var imageSize = _pdfDocument.PageSizes[pageIndex];
@@ -36,19 +38,26 @@ public class PdfManager
         }
     }
 
-    public void NextPage()
+    public int GetPageCount()
+    {
+        return PageCount;
+    }
+
+    public string NextPage()
     {
         if (_currentPageIndex < PageCount - 2)
         {
             _currentPageIndex += 2;
         }
+        return (_currentPageIndex + 1).ToString() + "/" + PageCount.ToString();
     }
-    public void PrevPage()
+    public string PrevPage()
     {
         if (_currentPageIndex > 0)
         {
             _currentPageIndex -= 2;
         }
+        return (_currentPageIndex + 1).ToString() + "/" + PageCount.ToString();
     }
 
     public Stream RenderCurrentPage()
@@ -58,11 +67,24 @@ public class PdfManager
 
     public Stream RenderSecondaryPage()
     {
+        CheckDisposed();
         if (_currentPageIndex + 1 > PageCount - 1) { return null; }
         return RenderPage(_currentPageIndex + 1);
     }
+
+    private void CheckDisposed()
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(PdfManager));
+        }
+    }
     public void Dispose()
     {
-        _pdfDocument.Dispose();
+        if (!_isDisposed)
+        {
+            _isDisposed = true;
+            _pdfDocument?.Dispose();
+        }
     }
 }

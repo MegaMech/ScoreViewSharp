@@ -22,7 +22,7 @@ namespace ScoreViewer.Views;
 public partial class MainWindow : Window
 {
     public MainViewModel _viewModel;
-    //private MenuView _menuView;
+    public MenuView _menuView;
 
     public MainWindow()
     {
@@ -34,36 +34,34 @@ public partial class MainWindow : Window
         //Content = _menuView;
 
         _viewModel = new MainViewModel();
-        //DataContext = _viewModel;
-        //ViewContent = new MenuView();
+        DataContext = _viewModel.MenuViewModel;
 
-        //MenuView menuView = new MenuView();
-        //menuView.DataContext = new MenuViewModel();
-
-        //ContentControl contentControl = this.FindControl<ContentControl>("ContentView");
-
-        //contentControl.Content = menuView;
-
-        //Content = new MenuView();
-
+        if (Content is MenuView)
+        {
+            _menuView = (MenuView)Content;
+        } else { throw new Exception("Content type not MenuView"); }
 
         _viewModel.MenuViewModel.PdfFileSelected += OnPdfFilSelected;
+
+
+        this.AddHandler(KeyDownEvent, Window_InputEvents, handledEventsToo: true);
+        this.AddHandler(PointerReleasedEvent, Window_PointerReleased, handledEventsToo: true);
+    }
+    private void Window_InputEvents(object sender, KeyEventArgs e)
+    {
     }
 
+    private void Window_PointerReleased(object sender, PointerReleasedEventArgs e)
+    {
+        // Handle PointerReleased event here
+    }
     public void OnGotoMenu(object sender, EventArgs e)
     {
-
-        //MenuViewModel menuViewModel = menuView.DataContext as MenuViewModel;
-        //if (menuViewModel != null)
-        //{
-        //    // Use the menuViewModel instance here
-        //}
         try
         {
-            // MainViewModel
-            //MenuView menuView = new MenuView();
-            //DataContext = _viewModel.MenuViewModel;
-            //this.Content = menuView;
+            DataContext = _viewModel.MenuViewModel;
+            Content = _menuView;
+            this.WindowState = WindowState.Normal;
         }
         catch
         {
@@ -86,6 +84,7 @@ public partial class MainWindow : Window
         // Skip re-creating the second window if it already exists.
         if (_secondWindow != null)
         {
+            _secondWindow.UpdatePdfManagerRef(_pdfManager);
             _secondWindow.Show();
         }
         else
@@ -106,11 +105,13 @@ public partial class MainWindow : Window
             _secondWindow.Show();
         }
 
+        this.WindowState = WindowState.Maximized;
+
         // Finally launch the PDF view
-        var pdfView = new PdfView();
-        pdfView.Init(_pdfManager, this, _secondWindow);
+        var pdfView = new PdfView(_pdfManager, this, _secondWindow);
         this.Content = pdfView;
 
+        // Subscribe to the GotoMenu event.
         pdfView.GotoMenu += OnGotoMenu;
     }
 }

@@ -1,5 +1,9 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Platform;
+using System;
 using System.Collections.Generic;
 
 namespace ScoreViewer.Views;
@@ -12,6 +16,8 @@ public partial class SecondaryWindow : Window
         InitializeComponent();
         _pdfManager = pdfManager;
         _pdfImage = this.FindControl<Avalonia.Controls.Image>("PdfImage2");
+
+        this.GetObservable(KeyDownEvent).Subscribe(Window_InputEvents);
     }
     public void UpdatePage()
     {
@@ -25,5 +31,28 @@ public partial class SecondaryWindow : Window
                 _pdfImage.Source = new Avalonia.Media.Imaging.Bitmap(stream);
             }
         }
+    }
+    public void UpdatePdfManagerRef(PdfManager pdfManager)
+    {
+        _pdfManager = pdfManager;
+    }
+
+    private void Window_InputEvents(KeyEventArgs e)
+    {
+        //if (!_userInterface.IsVisible)
+        //{
+        //    if (e.Key == Key.Right)
+        //    {
+        //        // Handle right arrow key press
+        //        UpdatePageNumber(_pdfManager.NextPage());
+        //        ShowPage();
+        //    }
+        //    else if (e.Key == Key.Left)
+        //    {
+        //        // Handle left arrow key press
+        //        UpdatePageNumber(_pdfManager.PrevPage());
+        //        ShowPage();
+        //    }
+        //}
     }
 }

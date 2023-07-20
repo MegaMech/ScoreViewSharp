@@ -55,7 +55,6 @@ public class Node
     {
         if (IsFile)
         {
-            Debug.Print("CLICKED!");
             PdfFileSelected?.Invoke(PdfPath);
         }
     }

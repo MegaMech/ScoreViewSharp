@@ -6,8 +6,11 @@
              xmlns:vm="clr-namespace:ScoreViewer.ViewModels"
              x:Class="ScoreViewer.Views.MenuView"
 	         x:DataType="vm:MenuViewModel">
-    <Grid Background="LightBlue">
-		<StackPanel HorizontalAlignment="Center" Background="LightCoral">
+    <Grid>
+		<Grid.Background>
+			<ImageBrush Source="/Assets/menuBackground.png" Stretch="UniformToFill" AlignmentX="Left" AlignmentY="Top"/>
+		</Grid.Background>
+			<StackPanel HorizontalAlignment="Center" Background="#77CCCCCC">
 			<Grid Width="600">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="60"/>
@@ -16,13 +19,13 @@
 					<RowDefinition Height="60"/>
 				</Grid.RowDefinitions>
 				<Border BorderBrush="{x:Null}" Height="50">
-					<TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="40" FontWeight="Bold" FontFamily="Arial Black">ScoreView</TextBlock>
+					<TextBlock Foreground="Black" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="40" FontWeight="Bold" FontFamily="Arial Black">ScoreView</TextBlock>
 				</Border>
 				
-				<TreeView FontSize="18" x:Name="OneDriveTreeView" Grid.Row="1" ItemsSource="{Binding Nodes}">
+				<TreeView Foreground="Black" FontSize="18" x:Name="OneDriveTreeView" Grid.Row="1" ItemsSource="{Binding Nodes}">
 					<TreeView.ItemTemplate>
 						<TreeDataTemplate ItemsSource="{Binding SubNodes}"> 
-							<Button Click="TreeItemClickedHandler" IsEnabled="True" x:Name="TreeItemEl" Content="{Binding Title}" Background="Transparent" BorderBrush="Transparent" Padding="0" Margin="0">
+							<Button Foreground="Black" Click="TreeItemClickedHandler" IsEnabled="True" x:Name="TreeItemEl" Content="{Binding Title}" Background="Transparent" BorderBrush="Transparent" Padding="0" Margin="0">
 								<Button.Styles>
 									<Style Selector="Button">
 										<Setter Property="Background" Value="Transparent" />
@@ -42,7 +45,7 @@
 					</TreeView.ItemTemplate>
 				</TreeView>
 				
-				<Button FontSize="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="ExitButton" Grid.Row="3" Grid.Column="0">Exit</Button>
+				<Button Foreground="Black" FontSize="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="ExitButton" Grid.Row="3" Grid.Column="0">Exit</Button>
 			</Grid>
 		</StackPanel>
 	</Grid>
