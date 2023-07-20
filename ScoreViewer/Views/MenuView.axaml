@@ -14,6 +14,7 @@
 			<Grid Width="600">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="60"/>
+					<RowDefinition Height="30"/>
 					<RowDefinition Height="300"/>
 					<RowDefinition Height="60"/>
 					<RowDefinition Height="60"/>
@@ -21,8 +22,11 @@
 				<Border BorderBrush="{x:Null}" Height="50">
 					<TextBlock Foreground="Black" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="40" FontWeight="Bold" FontFamily="Arial Black">ScoreView</TextBlock>
 				</Border>
+
+				<TextBlock x:Name="ErrorMessage" Grid.Row="1" Background="red" Grid.Column="0" HorizontalAlignment="Stretch" TextAlignment="Center"></TextBlock>
+
 				
-				<TreeView Foreground="Black" FontSize="18" x:Name="OneDriveTreeView" Grid.Row="1" ItemsSource="{Binding Nodes}">
+				<TreeView Foreground="Black" FontSize="18" x:Name="OneDriveTreeView" Grid.Row="2" ItemsSource="{Binding Nodes}">
 					<TreeView.ItemTemplate>
 						<TreeDataTemplate ItemsSource="{Binding SubNodes}"> 
 							<Button Foreground="Black" Click="TreeItemClickedHandler" IsEnabled="True" x:Name="TreeItemEl" Content="{Binding Title}" Background="Transparent" BorderBrush="Transparent" Padding="0" Margin="0">
@@ -45,7 +49,7 @@
 					</TreeView.ItemTemplate>
 				</TreeView>
 				
-				<Button Foreground="Black" FontSize="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="ExitButton" Grid.Row="3" Grid.Column="0">Exit</Button>
+				<Button Foreground="Black" FontSize="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" x:Name="ExitButton" Grid.Row="4" Grid.Column="0">Exit</Button>
 			</Grid>
 		</StackPanel>
 	</Grid>
