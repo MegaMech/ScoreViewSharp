@@ -1,9 +1,7 @@
 ﻿using PdfiumViewer;
 using System;
 using System.IO;
-using System.Drawing;
-using System.Diagnostics;
-using Avalonia;
+
 
 public class PdfManager : IDisposable
 {
@@ -13,7 +11,11 @@ public class PdfManager : IDisposable
 
     public PdfManager(string filePath)
     {
-        _pdfDocument = PdfDocument.Load(filePath);
+        try {
+            _pdfDocument = PdfDocument.Load(filePath);
+        } catch (PdfiumViewer.PdfException e) {
+            throw new PdfManagerException(e.Message);
+        }
     }
 
     public int PageCount => _pdfDocument.PageCount;
